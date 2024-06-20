@@ -2,6 +2,7 @@ import { v7 as uuidv7 } from 'uuid';
 import { body, validationResult } from 'express-validator';
 import receipts from '../store/receiptsStore.js';
 
+let lock = false;
 
 const receiptValidationRules = [
   body('retailer').trim().isLength({ min: 1 }).withMessage('Retailer name is required'),
@@ -22,10 +23,26 @@ const validate = (req, res, next) => {
 };
 
 function processReceipt(req, res) {
-    // console.log(req.body);  
-    const id = uuidv7();   
-    receipts[id] = req.body; 
-    res.json({ id });  
+    const tryLock = () => {
+        if (!lock) {
+            lock = true;
+            return true;
+        }
+        return false;
+    };
+
+    const releaseLock = () => {
+        lock = false;
+    };
+
+    if (tryLock()) {
+        const id = uuidv7();
+        receipts[id] = req.body;
+        res.json({ id });
+        releaseLock();
+    } else {
+        res.status(503).json({ error: 'Service Unavailable. Please try again.' });
+    }
 }
 
 export { processReceipt, receiptValidationRules, validate };

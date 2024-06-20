@@ -43,7 +43,7 @@ Before you begin, ensure you have installed the following:
 - [npm](https://www.npmjs.com/get-npm) (usually comes with Node.js)
 - [Docker](https://www.docker.com/products/docker-desktop) (if running the application in a container)
 
-### Installing Node.js and npm
+## Installing Node.js and npm
 
 #### Windows
 
@@ -61,6 +61,20 @@ Before you begin, ensure you have installed the following:
 Alternatively, use Homebrew:
 ```bash
 brew install node
+```
+
+
+## Starting Docker Desktop from the Terminal
+
+### Install Docker
+```bash
+brew install --cask docker
+```
+
+**Start Docker Desktop**:
+
+```bash
+open /Applications/Docker.app
 ```
 
 # Setup
@@ -94,7 +108,7 @@ nodemon index.js
 ```
 
 ## Running with Docker
-To build the Docker image and run the service:
+To build the Docker image and run the service:(After cloning the repo and installing dependencies step)
 ```bash
 docker build -t receipt-processor .
 docker run -p 3000:3000 receipt-processor
@@ -158,6 +172,7 @@ A simple in-memory store for points. This cache optimizes retrieval of points by
 **Assumption**: Once a receipt is processed and assigned an ID, it is assumed that the receipt data does not change. Therefore, the points associated with a receipt do not need to be recalculated.
 
 **Benefits**:
+
 **Performance**: Reduces the computational load on the server by avoiding repeated calculations.
 
 **Efficiency**: Provides faster responses to clients requesting points for a receipt that has already been processed.
@@ -170,4 +185,19 @@ A simple in-memory store for points. This cache optimizes retrieval of points by
 
 **Efficiency**: By deferring the points calculation to the GET call, we ensure that resources are not wasted on calculations for receipts that might not be queried for points immediately or at all.
 
-**Caching***: Once the points are calculated, they are stored in the points store, making subsequent retrievals faster and more efficient.
+**Caching**: Once the points are calculated, they are stored in the points store, making subsequent retrievals faster and more efficient.
+
+## Locking Mechanism for Thread Safety
+
+**Purpose**: A simple locking mechanism is used to manage concurrent access to the in-memory stores (receiptsStore and pointsStore). This ensures that only one request can modify the stores at a time, preventing race conditions and ensuring data integrity.
+
+**Assumption**: Each operation that modifies the in-memory stores is atomic and can be completed quickly, minimizing the likelihood of collisions and lock contention.
+
+**Benefits**:
+
+**Thread Safety**: Ensures that concurrent requests do not interfere with each other, preventing data corruption.
+
+**Data Integrity**: Maintains the consistency of the data stored in the in-memory stores, ensuring that receipts and points are accurately recorded and retrieved.
+
+**Disadvantages of using above approach:**
+The single global lock can become a bottleneck, especially under high traffic conditions. If multiple users are trying to process receipts or fetch points simultaneously, they will be forced to wait for the lock to be released. This can significantly degrade the performance and responsiveness of the application.
