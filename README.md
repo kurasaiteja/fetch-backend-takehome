@@ -108,7 +108,7 @@ nodemon index.js
 ```
 
 ## Running with Docker
-To build the Docker image and run the service:(After cloning the repo and installing dependencies step)
+To build the Docker image and run the service:(After cloning the repo and installing dependencies step. Inside /fetch-backend-takehome)
 ```bash
 docker build -t receipt-processor .
 docker run -p 3000:3000 receipt-processor
