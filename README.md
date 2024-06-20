@@ -147,3 +147,27 @@ Handles the logic for calculating and returning points based on the receipt data
 
 ## store/receiptsStore.js
 A simple in-memory store for receipts.
+
+## store/pointsStore.js
+A simple in-memory store for points. This cache optimizes retrieval of points by avoiding recalculation.
+
+# Design Decisions
+## Caching with Points Store
+**Purpose**: The points store is used to cache the points for each receipt after they are calculated. This approach improves the efficiency of the application by eliminating the need to recalculate points every time they are requested.
+
+**Assumption**: Once a receipt is processed and assigned an ID, it is assumed that the receipt data does not change. Therefore, the points associated with a receipt do not need to be recalculated.
+
+**Benefits**:
+**Performance**: Reduces the computational load on the server by avoiding repeated calculations.
+
+**Efficiency**: Provides faster responses to clients requesting points for a receipt that has already been processed.
+
+**Simplicity**: Keeps the logic straightforward by only calculating points once and reusing the cached result.
+
+## Points Calculation on GET Call
+
+**Reason**: Points are calculated only when the GET call is made to retrieve them. This design ensures that the receipt data is processed and validated first, and points calculation is deferred until the data is actually needed.
+
+**Efficiency**: By deferring the points calculation to the GET call, we ensure that resources are not wasted on calculations for receipts that might not be queried for points immediately or at all.
+
+**Caching***: Once the points are calculated, they are stored in the points store, making subsequent retrievals faster and more efficient.
