@@ -201,3 +201,55 @@ A simple in-memory store for points. This cache optimizes retrieval of points by
 
 **Disadvantages of using above approach:**
 The single global lock can become a bottleneck, especially under high traffic conditions. If multiple users are trying to process receipts or fetch points simultaneously, they will be forced to wait for the lock to be released. This can significantly degrade the performance and responsiveness of the application.
+
+# Running the Postman Collection
+
+## Prerequisites
+Ensure that your Receipt Processor service is running on http://localhost:3000.
+
+Install Postman on your computer.
+
+## Steps to Import and Use the Postman Collection
+
+Download the ReceiptProcessor.postman_collection.json file provided in this repository.
+
+**Open Postman:**
+
+Launch the Postman application on your computer.
+
+**Import the Collection:**
+
+- Click on the "Import" button in the top left corner of the Postman interface.
+- Select the "File" option.
+- Choose the ReceiptProcessor.postman_collection.json file from your file system.
+- Click "Open" to import the collection.
+
+
+**View the Collection:**
+
+Once imported, you should see the "Receipt Processor" collection in the Collections sidebar on the left.
+
+## Use the Endpoints:
+
+**Process Receipt - Target:**
+
+- Click on the "Process Receipt - Target" request in the collection.
+- Ensure the request method is set to POST and the URL is http://localhost:3000/receipts/process.
+- The request body should already be filled with the JSON receipt for Target.
+- Click the "Send" button to send the request to your local server.
+- You will receive a response containing a unique receipt ID.
+
+**Process Receipt - M&M Corner Market:**
+
+- Click on the "Process Receipt - M&M Corner Market" request in the collection.
+- Ensure the request method is set to POST and the URL is http://localhost:3000/receipts/process.
+- The request body should already be filled with the JSON receipt for M&M Corner Market.
+- Click the "Send" button to send the request to your local server.
+- You will receive a response containing a unique receipt ID.
+
+**Get Points:**
+
+- After processing a receipt, copy the receipt ID from the response.
+- Click on the "Get Points" request in the collection.
+- Replace the :id in the URL http://localhost:3000/receipts/:id/points with the copied receipt ID.
+- Click the "Send" button to send the request and retrieve the points for the processed receipt.

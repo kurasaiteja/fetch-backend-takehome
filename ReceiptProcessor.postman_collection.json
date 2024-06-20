@@ -1,0 +1,75 @@
+{
+    "info": {
+      "name": "Receipt Processor",
+      "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+    },
+    "item": [
+      {
+        "name": "Process Receipt - Target",
+        "request": {
+          "method": "POST",
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "body": {
+            "mode": "raw",
+            "raw": "{\n  \"retailer\": \"Target\",\n  \"purchaseDate\": \"2022-01-01\",\n  \"purchaseTime\": \"13:01\",\n  \"items\": [\n    { \"shortDescription\": \"Mountain Dew 12PK\", \"price\": \"6.49\" },\n    { \"shortDescription\": \"Emils Cheese Pizza\", \"price\": \"12.25\" },\n    { \"shortDescription\": \"Knorr Creamy Chicken\", \"price\": \"1.26\" },\n    { \"shortDescription\": \"Doritos Nacho Cheese\", \"price\": \"3.35\" },\n    { \"shortDescription\": \"   Klarbrunn 12-PK 12 FL OZ  \", \"price\": \"12.00\" }\n  ],\n  \"total\": \"35.35\"\n}"
+          },
+          "url": {
+            "raw": "http://localhost:3000/receipts/process",
+            "protocol": "http",
+            "host": ["localhost"],
+            "port": "3000",
+            "path": ["receipts", "process"]
+          }
+        }
+      },
+      {
+        "name": "Process Receipt - M&M Corner Market",
+        "request": {
+          "method": "POST",
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "body": {
+            "mode": "raw",
+            "raw": "{\n  \"retailer\": \"M&M Corner Market\",\n  \"purchaseDate\": \"2022-03-20\",\n  \"purchaseTime\": \"14:33\",\n  \"items\": [\n    { \"shortDescription\": \"Gatorade\", \"price\": \"2.25\" },\n    { \"shortDescription\": \"Gatorade\", \"price\": \"2.25\" },\n    { \"shortDescription\": \"Gatorade\", \"price\": \"2.25\" },\n    { \"shortDescription\": \"Gatorade\", \"price\": \"2.25\" }\n  ],\n  \"total\": \"9.00\"\n}"
+          },
+          "url": {
+            "raw": "http://localhost:3000/receipts/process",
+            "protocol": "http",
+            "host": ["localhost"],
+            "port": "3000",
+            "path": ["receipts", "process"]
+          }
+        }
+      },
+      {
+        "name": "Get Points",
+        "request": {
+          "method": "GET",
+          "header": [],
+          "url": {
+            "raw": "http://localhost:3000/receipts/:id/points",
+            "protocol": "http",
+            "host": ["localhost"],
+            "port": "3000",
+            "path": ["receipts", ":id", "points"],
+            "variable": [
+              {
+                "key": "id",
+                "value": "<replace-with-receipt-id>"
+              }
+            ]
+          }
+        }
+      }
+    ]
+  }
+  
